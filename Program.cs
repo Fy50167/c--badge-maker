@@ -7,31 +7,44 @@ namespace CatWorx.BadgeMaker
   {
     static void Main(string[] args)
     {
-      List<string> employees = GetEmployees();
+      List<Employee> employees = GetEmployees();
       PrintEmployees(employees);
     }
 
-    static List<string> GetEmployees()
+    static List<Employee> GetEmployees()
     {
-      List<string> employees = new List<string>();
+      List<Employee> employees = new List<Employee>();
       while (true)
       {
-        Console.WriteLine("Please enter a name: ");
-        string input = Console.ReadLine() ?? "";
-        if (input == "") 
+        Console.WriteLine("Please enter a name: (leave empty to exit): ");
+        string firstName = Console.ReadLine() ?? "";
+        if (firstName == "") 
         {
           break;
         }
-        employees.Add(input);
+
+        Console.Write("Enter last name: ");
+        string lastName = Console.ReadLine() ?? "";
+
+        Console.Write("Enter id: ");
+        int id = Int32.Parse(Console.ReadLine() ?? "");
+
+        Console.Write("Enter photo url: ");
+        string photoUrl = Console.ReadLine() ?? "";
+
+        Employee currentEmployee = new Employee(firstName, lastName, id, photoUrl);
+
+        employees.Add(currentEmployee);
       }
       return employees;
     }
 
-    static void PrintEmployees(List<string> employees)
+    static void PrintEmployees(List<Employee> employees)
     {
       for (int i = 0; i < employees.Count; i++) 
       {
-        Console.WriteLine(employees[i]);
+        string template = "{0,-10}\t{1,-20}\t{2}";
+        Console.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetFullName(), employees[i].GetPhotoUrl()));
       }
     }
   }
