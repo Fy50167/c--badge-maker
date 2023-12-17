@@ -1,38 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CatWorx.BadgeMaker
 {
   class Program
   {
-    static void Main(string[] args)
+    async static Task Main(string[] args)
     {
-      List<string> employees = GetEmployees();
-      PrintEmployees(employees);
+      List<Employee> employees = GetEmployees();
+      Util.PrintEmployees(employees);
+      Util.MakeCSV(employees);
+      await Util.MakeBadges(employees);
     }
 
-    static List<string> GetEmployees()
+    static List<Employee> GetEmployees()
     {
-      List<string> employees = new List<string>();
+      List<Employee> employees = new List<Employee>();
       while (true)
       {
-        Console.WriteLine("Please enter a name: ");
-        string input = Console.ReadLine() ?? "";
-        if (input == "") 
+        Console.WriteLine("Please enter a name: (leave empty to exit): ");
+        string firstName = Console.ReadLine() ?? "";
+        if (firstName == "") 
         {
           break;
         }
-        employees.Add(input);
+
+        Console.Write("Enter last name: ");
+        string lastName = Console.ReadLine() ?? "";
+
+        Console.Write("Enter id: ");
+        int id = Int32.Parse(Console.ReadLine() ?? "");
+
+        Console.Write("Enter photo url: ");
+        string photoUrl = Console.ReadLine() ?? "";
+
+        Employee currentEmployee = new Employee(firstName, lastName, id, photoUrl);
+
+        employees.Add(currentEmployee);
       }
       return employees;
-    }
-
-    static void PrintEmployees(List<string> employees)
-    {
-      for (int i = 0; i < employees.Count; i++) 
-      {
-        Console.WriteLine(employees[i]);
-      }
     }
   }
 
